@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0e8cfc402a3f4eb9a408d999915d649f" Name="Diagram1">
+        <EntityTypeShape EntityType="DBFUNKOPOPModel.CART" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBFUNKOPOPModel.CITY" Width="1.5" PointX="3.75" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBFUNKOPOPModel.CLIENT" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBFUNKOPOPModel.COLLECTION" Width="1.5" PointX="1.5" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBFUNKOPOPModel.PRODUCT" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBFUNKOPOPModel.PROVINCE" Width="1.5" PointX="1.5" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBFUNKOPOPModel.SALE" Width="1.5" PointX="6" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBFUNKOPOPModel.SALE_DETAIL" Width="1.5" PointX="8.25" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBFUNKOPOPModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBFUNKOPOPModel.USER" Width="1.5" PointX="7.75" PointY="10" IsExpanded="true" />
+        <AssociationConnector Association="DBFUNKOPOPModel.FK__CART__idClient__60A75C0F" ManuallyRouted="false" />
+        <AssociationConnector Association="DBFUNKOPOPModel.FK__CART__idProduct__619B8048" ManuallyRouted="false" />
+        <AssociationConnector Association="DBFUNKOPOPModel.FK__CITY__idProvince__4BAC3F29" ManuallyRouted="false" />
+        <AssociationConnector Association="DBFUNKOPOPModel.FK__SALE__idCity__656C112C" ManuallyRouted="false" />
+        <AssociationConnector Association="DBFUNKOPOPModel.FK__SALE__idClient__6477ECF3" ManuallyRouted="false" />
+        <AssociationConnector Association="DBFUNKOPOPModel.FK__PRODUCT__idColle__5441852A" ManuallyRouted="false" />
+        <AssociationConnector Association="DBFUNKOPOPModel.FK__SALE_DETA__idPro__6A30C649" ManuallyRouted="false" />
+        <AssociationConnector Association="DBFUNKOPOPModel.FK__SALE_DETA__idSal__693CA210" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
