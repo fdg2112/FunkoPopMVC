@@ -6,21 +6,21 @@ namespace Enities
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class SALE_DETAIL
+    public partial class Sale_Detail
     {
         [Key]
-        public int idSaleDetail { get; set; }
+        public int IdSaleDetail { get; set; }
 
-        public int? idSale { get; set; }
+        public int? IdSale { get; set; }
 
-        public int? idProduct { get; set; }
+        public int? IdProduct { get; set; }
 
-        public int? amount { get; set; }
+        public int? Amount { get; set; }
 
-        public decimal? total { get; set; }
+        public decimal? Total { get; set; }
 
-        public virtual PRODUCT PRODUCT { get; set; }
+        public virtual Product PRODUCT { get; set; }
 
-        public virtual SALE SALE { get; set; }
+        public virtual Sale SALE { get; set; }
     }
 }

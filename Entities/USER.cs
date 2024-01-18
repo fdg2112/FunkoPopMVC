@@ -7,30 +7,30 @@ namespace Enities
     using System.Data.Entity.Spatial;
 
     [Table("USER")]
-    public partial class USER
+    public partial class User
     {
         [Key]
-        public int idUser { get; set; }
+        public int IdUser { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string lastname { get; set; }
+        public string Lastname { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string firstname { get; set; }
+        public string Firstname { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string email { get; set; }
+        public string Email { get; set; }
 
         [StringLength(150)]
-        public string password { get; set; }
+        public string Password { get; set; }
 
-        public bool? reboot { get; set; }
+        public bool? Reboot { get; set; }
 
-        public bool? active { get; set; }
+        public bool? Active { get; set; }
 
-        public DateTime? registerdate { get; set; }
+        public DateTime? Registerdate { get; set; }
     }
 }

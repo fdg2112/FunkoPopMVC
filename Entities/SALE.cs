@@ -7,44 +7,42 @@ namespace Enities
     using System.Data.Entity.Spatial;
 
     [Table("SALE")]
-    public partial class SALE
+    public partial class Sale
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SALE()
+        public Sale()
         {
-            SALE_DETAIL = new HashSet<SALE_DETAIL>();
+            SALE_DETAIL = new HashSet<Sale_Detail>();
         }
 
         [Key]
-        public int idSale { get; set; }
+        public int IdSale { get; set; }
 
-        public int? idClient { get; set; }
+        public int? IdClient { get; set; }
 
-        public int? amount_products { get; set; }
+        public int? Amount_products { get; set; }
 
-        public decimal? payment_total { get; set; }
-
-        [StringLength(50)]
-        public string contact { get; set; }
-
-        public int? idCity { get; set; }
+        public decimal? Payment_total { get; set; }
 
         [StringLength(50)]
-        public string phone { get; set; }
+        public string Contact { get; set; }
+
+        public int? IdCity { get; set; }
+
+        [StringLength(50)]
+        public string Phone { get; set; }
 
         [StringLength(500)]
-        public string address { get; set; }
+        public string Address { get; set; }
 
         [StringLength(50)]
-        public string idTransaction { get; set; }
+        public string IdTransaction { get; set; }
 
-        public DateTime? saleDate { get; set; }
+        public DateTime? SaleDate { get; set; }
 
-        public virtual CITY CITY { get; set; }
+        public virtual City CITY { get; set; }
 
-        public virtual CLIENT CLIENT { get; set; }
+        public virtual Client CLIENT { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SALE_DETAIL> SALE_DETAIL { get; set; }
+        public virtual ICollection<Sale_Detail> SALE_DETAIL { get; set; }
     }
 }

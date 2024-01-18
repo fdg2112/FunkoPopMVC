@@ -7,19 +7,19 @@ namespace Enities
     using System.Data.Entity.Spatial;
 
     [Table("CART")]
-    public partial class CART
+    public partial class Cart
     {
         [Key]
-        public int idCart { get; set; }
+        public int IdCart { get; set; }
 
-        public int? idClient { get; set; }
+        public int? IdClient { get; set; }
 
-        public int? idProduct { get; set; }
+        public int? IdProduct { get; set; }
 
-        public int? amount { get; set; }
+        public int? Amount { get; set; }
 
-        public virtual CLIENT CLIENT { get; set; }
+        public virtual Client CLIENT { get; set; }
 
-        public virtual PRODUCT PRODUCT { get; set; }
+        public virtual Product PRODUCT { get; set; }
     }
 }

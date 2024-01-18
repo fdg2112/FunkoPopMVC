@@ -7,22 +7,20 @@ namespace Enities
     using System.Data.Entity.Spatial;
 
     [Table("PROVINCE")]
-    public partial class PROVINCE
+    public partial class Province
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PROVINCE()
+        public Province()
         {
-            CITY = new HashSet<CITY>();
+            CITY = new HashSet<City>();
         }
 
         [Key]
-        public int idProvince { get; set; }
+        public int IdProvince { get; set; }
 
         [Required]
         [StringLength(25)]
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CITY> CITY { get; set; }
+        public virtual ICollection<City> CITY { get; set; }
     }
 }

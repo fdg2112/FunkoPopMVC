@@ -7,50 +7,47 @@ namespace Enities
     using System.Data.Entity.Spatial;
 
     [Table("PRODUCT")]
-    public partial class PRODUCT
+    public partial class Product
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PRODUCT()
+        public Product()
         {
-            CART = new HashSet<CART>();
-            SALE_DETAIL = new HashSet<SALE_DETAIL>();
+            CART = new HashSet<Cart>();
+            SALE_DETAIL = new HashSet<Sale_Detail>();
         }
 
         [Key]
-        public int idProduct { get; set; }
+        public int IdProduct { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string name { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [StringLength(999)]
-        public string description { get; set; }
+        public string Description { get; set; }
 
-        public decimal? price { get; set; }
+        public decimal? Price { get; set; }
 
-        public int stock { get; set; }
+        public int Stock { get; set; }
 
-        public bool shine { get; set; }
+        public bool Shine { get; set; }
 
-        public int? idCollection { get; set; }
+        public int? IdCollection { get; set; }
 
-        public bool active { get; set; }
+        public bool Active { get; set; }
 
         [StringLength(400)]
-        public string url_image { get; set; }
+        public string Url_image { get; set; }
 
         [StringLength(100)]
-        public string ref_image { get; set; }
+        public string Ref_image { get; set; }
 
-        public DateTime? registerdate { get; set; }
+        public DateTime? Registerdate { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CART> CART { get; set; }
+        public virtual ICollection<Cart> CART { get; set; }
 
-        public virtual COLLECTION COLLECTION { get; set; }
+        public virtual Collection COLLECTION { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SALE_DETAIL> SALE_DETAIL { get; set; }
+        public virtual ICollection<Sale_Detail> SALE_DETAIL { get; set; }
     }
 }

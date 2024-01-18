@@ -7,41 +7,38 @@ namespace Enities
     using System.Data.Entity.Spatial;
 
     [Table("CLIENT")]
-    public partial class CLIENT
+    public partial class Client
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CLIENT()
+        public Client()
         {
-            CART = new HashSet<CART>();
-            SALE = new HashSet<SALE>();
+            CART = new HashSet<Cart>();
+            SALE = new HashSet<Sale>();
         }
 
         [Key]
-        public int idClient { get; set; }
+        public int IdClient { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string lastname { get; set; }
+        public string Lastname { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string firstname { get; set; }
+        public string Firstname { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string email { get; set; }
+        public string Email { get; set; }
 
         [StringLength(150)]
-        public string password { get; set; }
+        public string Password { get; set; }
 
-        public bool? reboot { get; set; }
+        public bool? Reboot { get; set; }
 
-        public DateTime? registerdate { get; set; }
+        public DateTime? Registerdate { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CART> CART { get; set; }
+        public virtual ICollection<Cart> CART { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SALE> SALE { get; set; }
+        public virtual ICollection<Sale> SALE { get; set; }
     }
 }

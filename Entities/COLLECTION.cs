@@ -7,12 +7,12 @@ namespace Enities
     using System.Data.Entity.Spatial;
 
     [Table("COLLECTION")]
-    public partial class COLLECTION
+    public partial class Collection
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public COLLECTION()
+        public Collection()
         {
-            PRODUCT = new HashSet<PRODUCT>();
+            PRODUCT = new HashSet<Product>();
         }
 
         [Key]
@@ -37,6 +37,6 @@ namespace Enities
         public DateTime? registerdate { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PRODUCT> PRODUCT { get; set; }
+        public virtual ICollection<Product> PRODUCT { get; set; }
     }
 }

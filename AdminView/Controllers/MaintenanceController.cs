@@ -6,14 +6,15 @@ using System.Web.Mvc;
 
 namespace AdminView.Controllers
 {
-    public class HomeController : Controller
+    public class MaintenanceController : Controller
     {
-        public ActionResult Index()
+        // GET: Maintenance
+        public ActionResult Collection()
         {
             return View();
         }
 
-        public ActionResult Users()
+        public ActionResult Product()
         {
             return View();
         }
