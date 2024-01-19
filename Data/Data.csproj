@@ -51,10 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CD_Users.cs" />
-    <Compile Include="Connection.cs" />
     <Compile Include="FunkoPopContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserData.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BBDD\" />
