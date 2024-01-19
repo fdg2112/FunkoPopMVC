@@ -25,7 +25,7 @@ namespace AdminView.Controllers
         {
             List<User> oList = new UserLogic().GetList();
 
-            return Json(oList, JsonRequestBehavior.AllowGet);
+            return Json(new { data = oList } , JsonRequestBehavior.AllowGet);
         }
     }
 }

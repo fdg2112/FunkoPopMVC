@@ -83,3 +83,4 @@ INSERT INTO CITY (postal_code, name, idProvince) VALUES
 ('S3000', 'Santa Fé', 21);
 
 INSERT INTO [DBFUNKOPOP].[dbo].[USER] (lastname, firstname, email, password) VALUES ('Gonzalez', 'Franco', 'fdg2112@gmail.com', '239BD0832C93B1753353C7C5188FD421D3FF9D138DE88F721444F94DA5B6A3A7')
+INSERT INTO [DBFUNKOPOP].[dbo].[USER] (lastname, firstname, email, password,active) VALUES ('Barreto', 'Mariana', 'marbar@gmail.com', '239BD0832C93B1753353C7C5188FD421D3FF9D138DE88F731244F94DA5B6A3A7',0)
