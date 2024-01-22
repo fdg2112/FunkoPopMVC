@@ -123,3 +123,50 @@ GO
 --    user_id INT NOT NULL REFERENCES [user](id)
 --);
 --GO
+
+create procedure sp_AddUser(
+    @lastname VARCHAR(100),
+    @firstname VARCHAR(100),
+    @email VARCHAR(100),
+	@password VARCHAR(150),
+	@active BIT,
+	@Message VARCHAR(500),
+	@Result INT OUTPUT
+)
+AS
+BEGIN
+	SET @Result = 0
+	IF NOT EXISTS (SELECT * FROM [USER] WHERE email = @email)
+	BEGIN
+		INSERT INTO [DBFUNKOPOP].[dbo].[USER] (lastname, firstname, email, password, active) VALUES (@lastname, @firstname, @email, @password, @active)
+		SET @Result = scope_identity()
+	END
+	ELSE
+		SET @Message = 'El email ya existe'
+END
+
+create procedure sp_Edit(
+	@idUser INT,
+    @lastname VARCHAR(100),
+    @firstname VARCHAR(100),
+    @email VARCHAR(100),
+	@active BIT,
+	@Message VARCHAR(500),
+	@Result INT OUTPUT
+)
+AS
+BEGIN
+	SET @Result = 0
+	IF NOT EXISTS (SELECT * FROM [USER] WHERE email = @email AND idUser != @idUser)
+	BEGIN
+		UPDATE TOP (1) [USER] SET
+		lastname = @lastname,
+	 	firstname = @firstname,
+		email= @email,
+		active = @active
+		WHERE idUser = @idUser
+		SET @Result = 1
+	END
+	ELSE
+		SET @Message = 'El email ya existe'
+END

@@ -44,7 +44,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -52,6 +52,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body g-2">
+                <input id="txtId" type="hidden" value="0"/>
                 <div class="row">
                     <div class="col-sm-6">
                         <label for="txtFirstname" class="form-label">Nombre</label>
@@ -75,7 +76,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success">Guardar Cambios</button>
+                <button type="button" class="btn btn-success" onclick="Save()">Guardar Cambios</button>
             </div>
         </div>
     </div>
@@ -84,6 +85,7 @@
 @section scripts{
     <script>
         var tabledata
+        var selectedRow
 
         tabledata = $("#table").DataTable({
             responsive: true,
@@ -116,15 +118,51 @@
             }
         });
 
-        function openModal() {
+        function openModal(json) {
+            $("#txtId").val("");
+            $("#txtFirstname").val("");
+            $("#txtLastname").val("");
+            $("#txtEmail").val("");
+            $("#userActive").val(1);
+            if (json != null) {
+                $("#txtId").val(json.IdUser);
+                $("#txtFirstname").val(json.Firstname);
+                $("#txtLastname").val(json.Lastname);
+                $("#txtEmail").val(json.Email);
+                $("#userActive").val(json.Active == true ? 1 : 0);
+            }
+
             $("#FormModal").modal("show");
         }
 
         $("#table tbody").on("click", '.btn-edit', function () {
-            var selectedRow = $(this).closest("tr");
+            selectedRow = $(this).closest("tr");
 
             var data = tabledata.row(selectedRow).data();
+
+            console.log(data)
+
+            openModal(data)
         })
+
+        function Save() {
+            var user = {
+                IdUser: $("#txtId").val(),
+                Active: $("#userActive").val() == 1 ? true : false,
+                Email: $("#txtEmail").val(),
+                Firstname: $("#txtFirstname").val(),
+                Lastname: $("#txtLastname").val()
+            }
+
+            if (user.IdUser == 0) {
+                tabledata.row.add(user).draw(false);
+            } else {
+                tabledata.row(selectedRow).data(user).draw(false);
+            }
+            $("#FormModal").modal("hide");
+        }
+
+        
 
     </script>
 }

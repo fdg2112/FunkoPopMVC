@@ -45,9 +45,9 @@ namespace Data
                 if (string.IsNullOrEmpty(user.Firstname)) throw new ArgumentException("El campo Nombre del usuario no puede estar vacío.", nameof(user.Firstname));
                 if (string.IsNullOrEmpty(user.Lastname)) throw new ArgumentException("El campo Apellido del usuario no puede estar vacío.", nameof(user.Lastname));
                 if (string.IsNullOrEmpty(user.Email)) throw new ArgumentException("El campo Email del usuario no puede estar vacío.", nameof(user.Email));
-                if (user.Firstname.Length > 255) throw new ArgumentException("El límite del campo Nombre de Usuario es de 255 caracteres.", nameof(user.Firstname));
-                if (user.Lastname.Length > 255) throw new ArgumentException("El límite del campo Apellido de Usuario es de 255 caracteres.", nameof(user.Lastname));
-                if (user.Email.Length > 45) throw new ArgumentException("El límite del campo Email de Usuario es de 45 caracteres.", nameof(user.Email));
+                if (user.Firstname.Length > 100) throw new ArgumentException("El límite del campo Nombre de Usuario es de 100 caracteres.", nameof(user.Firstname));
+                if (user.Lastname.Length > 100) throw new ArgumentException("El límite del campo Apellido de Usuario es de 100 caracteres.", nameof(user.Lastname));
+                if (user.Email.Length > 150) throw new ArgumentException("El límite del campo Email de Usuario es de 150 caracteres.", nameof(user.Email));
                 _context.User.Add(user);
                 _context.SaveChanges();
             }
