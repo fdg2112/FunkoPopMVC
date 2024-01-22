@@ -19,13 +19,13 @@
 
         <div class="row">
             <div class="col-12">
-                <button type="button" class="btn btn-success">Agregar Usuario</button>
+                <button type="button" class="btn btn-success" onclick="openModal()">Agregar Usuario</button>
             </div>
         </div>
 
         <hr />
 
-        <table id="table" class="table table-striped table-hover">
+        <table id="table" class="display cell-border" style="width: 100%">
             <thead>
                 <tr>
                     <th>Nombre</th>
@@ -37,26 +37,53 @@
             </thead>
 
             <tbody>
-
             </tbody>
         </table>
 
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nuevo Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body g-2">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="txtFirstname" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="txtFirstname">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtLastname" class="form-label">Apellido</label>
+                        <input type="text" class="form-control" id="txtLastname">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="txtEmail" placeholder="name@example.com">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="userActive" class="form-label">Activo</label>
+                        <select class="form-select" id="userActive">
+                            <option value="1">SI</option>
+                            <option value="0">NO</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts{
     <script>
         var tabledata
-
-        jQuery.ajax({
-            url: '@Url.Action("GetUsersList","Home")',
-            type: "GET",
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                console.log(data)
-            }
-        })
 
         tabledata = $("#table").DataTable({
             responsive: true,
@@ -77,14 +104,27 @@
                     }
                 },
                 {
-                    "defaultContent": '<button type="button" class="btn btn-success btn-sm"><i class="fas fa-pen me-1"></i></button>' +
+                    "defaultContent": '<button type="button" class="btn btn-success btn-sm btn-edit"><i class="fas fa-pen me-1"></i></button>' +
                         '<button type="button" class="btn btn-danger btn-sm ms-2"><i class="fas fa-trash me-1"></i></button>',
                     "orderable": false,
                     "searchtable": false,
                     "width": "90px"
                 }
-            ]
+            ],
+            "language": {
+                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
+            }
         });
 
+        function openModal() {
+            $("#FormModal").modal("show");
+        }
+
+        $("#table tbody").on("click", '.btn-edit', function () {
+            var selectedRow = $(this).closest("tr");
+
+            var data = tabledata.row(selectedRow).data();
+        })
+
     </script>
-    }
+}
