@@ -26,28 +26,11 @@ namespace Data
                 throw new Exception("Error al obtener la lista de usuarios.", ex);
             }
         }
-        public User Get(int id)
-        {
-            try
-            {
-                return _context.User.Find(id);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al obtener el usuario.", ex);
-            }
-        }
+
         public void Add(User user)
         {
             try
             {
-                if (user == null) throw new ArgumentNullException(nameof(user), "El usuario no puede ser nulo.");
-                if (string.IsNullOrEmpty(user.Firstname)) throw new ArgumentException("El campo Nombre del usuario no puede estar vacío.", nameof(user.Firstname));
-                if (string.IsNullOrEmpty(user.Lastname)) throw new ArgumentException("El campo Apellido del usuario no puede estar vacío.", nameof(user.Lastname));
-                if (string.IsNullOrEmpty(user.Email)) throw new ArgumentException("El campo Email del usuario no puede estar vacío.", nameof(user.Email));
-                if (user.Firstname.Length > 100) throw new ArgumentException("El límite del campo Nombre de Usuario es de 100 caracteres.", nameof(user.Firstname));
-                if (user.Lastname.Length > 100) throw new ArgumentException("El límite del campo Apellido de Usuario es de 100 caracteres.", nameof(user.Lastname));
-                if (user.Email.Length > 150) throw new ArgumentException("El límite del campo Email de Usuario es de 150 caracteres.", nameof(user.Email));
                 _context.User.Add(user);
                 _context.SaveChanges();
             }
@@ -89,29 +72,17 @@ namespace Data
         {
             try
             {
-                if (user == null) throw new ArgumentNullException(nameof(user), "El usuario no puede ser nulo.");
                 var existingUser = _context.User.FirstOrDefault(u => u.IdUser == user.IdUser) ?? throw new ArgumentException("El usuario no existe en la base de datos.", nameof(user.IdUser));
                 existingUser.Firstname = user.Firstname;
                 existingUser.Lastname = user.Lastname;
                 existingUser.Email = user.Email;
+                existingUser.Password = user.Password;
                 existingUser.Active = user.Active;
                 _context.SaveChanges();
             }
             catch (Exception ex)
             {
                 throw new Exception("Ha ocurrido un error al intentar actualizar el usuario. " + ex.Message, ex);
-            }
-        }
-
-        public User GetUserByEmail(string email)
-        {
-            try
-            {
-                return _context.User.FirstOrDefault(user => user.Email == email);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al obtener el usuario.", ex);
             }
         }
 

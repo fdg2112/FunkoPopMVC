@@ -153,7 +153,21 @@
                 Firstname: $("#txtFirstname").val(),
                 Lastname: $("#txtLastname").val()
             }
+            jQuery.ajax({
+                url: '@Url.Action("AddUser","Home")',
+                type: "POST",
+                data: JSON.stringify({ user: user }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log(data)
+                }, error: function (error) {
+                    console.log(error)
+                },
+                beforeSend: function () {
 
+                },
+            });
             if (user.IdUser == 0) {
                 tabledata.row.add(user).draw(false);
             } else {
@@ -162,7 +176,7 @@
             $("#FormModal").modal("hide");
         }
 
-        
+
 
     </script>
 }
