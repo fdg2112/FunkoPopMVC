@@ -1,6 +1,7 @@
 ﻿using Enities;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
@@ -48,20 +49,6 @@ namespace Data
                 _context.User.Remove(elementToRemove);
                 _context.SaveChanges();
             }
-            catch (DbUpdateException ex)
-            {
-                var innerException = ex.InnerException.InnerException;
-                if (innerException != null && innerException.Message.Contains("FK_"))
-                {
-                    var match = System.Text.RegularExpressions.Regex.Match(innerException.Message, @"(?<=tabla ')([^']*)");
-                    if (match.Success)
-                    {
-                        string tableName = match.Value;
-                        throw new Exception($"No se puede eliminar el usuario porque está relacionado con la tabla {tableName}.");
-                    }
-                }
-                throw new Exception("No se ha podido eliminar el usuario.");
-            }
             catch (Exception ex)
             {
                 throw new Exception($"No se ha podido eliminar el usuario. {ex.Message}");
@@ -86,5 +73,9 @@ namespace Data
             }
         }
 
+        public bool ExistsByEmail(string email)
+        {
+            return _context.User.Any(u => u.Email == email);
+        }
     }
 }

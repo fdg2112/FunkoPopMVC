@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using Enities;
 using Logic;
+using static Logic.UserLogic;
 
 namespace AdminView.Controllers
 {
@@ -36,13 +37,18 @@ namespace AdminView.Controllers
             {
                 if (userController.IdUser == 0) new UserLogic().Add(userController);
                 else new UserLogic().Update(userController);
+                return Json(new { result = userController });
             }
-            catch (Exception ex)
+            catch (ValidationException ex)
             {
-                throw new Exception(ex.Message, ex);
+                Response.StatusCode = 400; // Bad Request
+                return Json(new { error = ex.Message });
             }
-            
-            return Json(new { result = userController }, JsonRequestBehavior.AllowGet);
+            catch (Exception)
+            {
+                Response.StatusCode = 500; // Internal Server Error
+                return Json(new { error = "Ha ocurrido un error al intentar agregar el usuario." });
+            }
         }
     }
 }

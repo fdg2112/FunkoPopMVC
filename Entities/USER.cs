@@ -27,10 +27,12 @@ namespace Enities
         [StringLength(150)]
         public string Password { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public bool? Reboot { get; set; }
 
         public bool? Active { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? Registerdate { get; set; }
     }
 }
