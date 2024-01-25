@@ -6,7 +6,9 @@ using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,8 +29,19 @@ namespace Logic
             {
                 throw new ValidationException("Ya existe un usuario con el mismo correo electrónico.");
             }
-            user.Password = Resources.ConvertSha256("contraseña");
-            userData.Add(user); 
+            string password = Resources.GeneratePassword();
+            string subject = "Creación de cuenta";
+            string bodyMessage = $@"<h3>Se ha creado la cuenta exitosamente!</h3></br></br>
+                                    <p'>Su contraseña de acceso es: {password}</p>";
+            bool response = Resources.SendEmail(user.Email, subject, bodyMessage);
+            if (response)
+            {
+                user.Password = Resources.ConvertSha256(password);
+                userData.Add(user);
+            } else
+            {
+                throw new ValidationException("No se pudo enviar el correo");
+            }
         }
 
         public bool Delete(int id)
@@ -65,6 +78,15 @@ namespace Logic
             {
             }
         }
+
+        private static bool IsValidEmail(string email)
+        {
+            // Utilizando una expresión regular para validar el formato de email
+            // Esta expresión regular es una aproximación simple y no cubre todos los casos posibles
+            string pattern = @"^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$";
+            Regex regex = new Regex(pattern);
+            return regex.IsMatch(email);
+        }
         private static void Validation(User user)
         {
             if (user == null) throw new ValidationException("El usuario no puede ser nulo.");
@@ -74,6 +96,7 @@ namespace Logic
             if (user.Firstname.Length > 100) throw new ValidationException("El límite del campo Nombre de Usuario es de 100 caracteres.");
             if (user.Lastname.Length > 100) throw new ValidationException("El límite del campo Apellido de Usuario es de 100 caracteres.");
             if (user.Email.Length > 150) throw new ValidationException("El límite del campo Email de Usuario es de 150 caracteres.");
+            if (!IsValidEmail(user.Email)) throw new ValidationException("El formato del correo electrónico no es válido.");
         }
 
     }

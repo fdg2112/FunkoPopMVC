@@ -32,7 +32,7 @@ namespace Logic
         }
 
         public static bool SendEmail(string email, string subject, string message) {
-            bool result = false;
+            bool result;
             try
             {
                 MailMessage mail = new MailMessage();

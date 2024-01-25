@@ -25,9 +25,22 @@ namespace AdminView.Controllers
         [HttpGet]
         public JsonResult GetUsersList()
         {
-            List<User> oList = new UserLogic().GetList();
+            try
+            {
+                List<User> oList = new UserLogic().GetList();
+                return Json(new { data = oList }, JsonRequestBehavior.AllowGet);
+            }
+            catch (ValidationException ex)
+            {
+                Response.StatusCode = 400; // Bad Request
+                return Json(new { error = ex.Message });
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = 500; // Internal Server Error
+                return Json(new { error = "Ha ocurrido un error al intentar agregar el usuario." });
+            }
 
-            return Json(new { data = oList } , JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
