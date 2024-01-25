@@ -41,13 +41,14 @@ namespace Data
             }
         }
 
-        public void Delete(int id)
+        public bool Delete(int id)
         {
             try
             {
                 var elementToRemove = _context.User.Find(id) ?? throw new Exception($"El usuario con ID {id} no existe.");
                 _context.User.Remove(elementToRemove);
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {

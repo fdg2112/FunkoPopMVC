@@ -50,5 +50,27 @@ namespace AdminView.Controllers
                 return Json(new { error = "Ha ocurrido un error al intentar agregar el usuario." });
             }
         }
+
+        [HttpPost]
+        public JsonResult DeleteUser(int id)
+        {
+            try
+            {
+                bool response = false;
+                response = new UserLogic().Delete(id);
+                return Json(new { result = response });
+            }
+            catch (ValidationException ex)
+            {
+                Response.StatusCode = 400; // Bad Request
+                return Json(new { error = ex.Message });
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = 500; // Internal Server Error
+                return Json(new { error = "Ha ocurrido un error al intentar agregar el usuario." });
+            }
+        }
+
     }
 }

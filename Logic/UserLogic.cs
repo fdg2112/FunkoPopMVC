@@ -31,11 +31,11 @@ namespace Logic
             userData.Add(user); 
         }
 
-        public void Delete(int id)
+        public bool Delete(int id)
         {
             try
             {
-                userData.Delete(id);
+                return userData.Delete(id);
             }
             catch (DbUpdateException ex)
             {
