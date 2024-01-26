@@ -59,10 +59,12 @@ namespace Data
             try
             {
                 var existingProduct = _context.Product.FirstOrDefault(u => u.IdProduct == product.IdProduct) ?? throw new ArgumentException("El producto no existe en la base de datos.", nameof(product.IdProduct));
-                existingProduct.Firstname = product.Firstname;
-                existingProduct.Lastname = product.Lastname;
-                existingProduct.Email = product.Email;
-                existingProduct.Password = product.Password;
+                existingProduct.Name = product.Name;
+                existingProduct.Description = product.Description;
+                existingProduct.IdCollection = product.IdCollection;
+                existingProduct.Price = product.Price;
+                existingProduct.Stock = product.Stock;
+                existingProduct.Shine = product.Shine;
                 existingProduct.Active = product.Active;
                 _context.SaveChanges();
             }
