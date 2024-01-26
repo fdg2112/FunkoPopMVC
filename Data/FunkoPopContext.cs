@@ -7,10 +7,12 @@ namespace Data
     {
         public FunkoPopContext()
             : base("name=FunkoPopDbConnection")
-        {
+        { 
+            // Deshabilitar Lazy Loading para evitar redundancias
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
-        public virtual DbSet<Cart> Cart { get; set; }
+    public virtual DbSet<Cart> Cart { get; set; }
         public virtual DbSet<City> City { get; set; }
         public virtual DbSet<Client> Client { get; set; }
         public virtual DbSet<Collection> Collection { get; set; }
@@ -47,19 +49,19 @@ namespace Data
                 .IsUnicode(false);
 
             modelBuilder.Entity<Collection>()
-                .Property(e => e.name)
+                .Property(e => e.Name)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Collection>()
-                .Property(e => e.description)
+                .Property(e => e.Description)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Collection>()
-                .Property(e => e.url_image)
+                .Property(e => e.Url_image)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Collection>()
-                .Property(e => e.ref_image)
+                .Property(e => e.Ref_image)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Product>()

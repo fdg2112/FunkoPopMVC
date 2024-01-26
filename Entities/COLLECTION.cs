@@ -9,34 +9,37 @@ namespace Enities
     [Table("COLLECTION")]
     public partial class Collection
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Collection()
         {
-            PRODUCT = new HashSet<Product>();
+            Product = new HashSet<Product>();
+        }
+
+        public Collection(string ref_image)
+        {
+            this.Ref_image = ref_image;
         }
 
         [Key]
-        public int idCollection { get; set; }
+        public int IdCollection { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string name { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [StringLength(999)]
-        public string description { get; set; }
+        public string Description { get; set; }
 
-        public bool? active { get; set; }
+        public bool? Active { get; set; }
 
         [StringLength(400)]
-        public string url_image { get; set; }
+        public string Url_image { get; set; }
 
         [StringLength(100)]
-        public string ref_image { get; set; }
+        public string Ref_image { get; set; }
 
-        public DateTime? registerdate { get; set; }
+        public DateTime? Registerdate { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Product> PRODUCT { get; set; }
+        public virtual ICollection<Product> Product { get; set; }
     }
 }

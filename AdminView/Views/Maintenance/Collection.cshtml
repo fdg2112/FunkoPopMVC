@@ -4,5 +4,247 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Collection</h2>
+
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="index.html">Mantenimiento</a></li>
+    <li class="breadcrumb-item active">Colecciones</li>
+</ol>
+
+<div class="card">
+
+    <div class="card-header">
+        <i class="fas fa-collections me-1"></i> Listado de Colecciones
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-success" onclick="openModal()">Agregar Colección</button>
+            </div>
+        </div>
+
+        <hr />
+
+        <table id="table" class="display cell-border" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Activa</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nueva Colección</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input id="txtId" type="hidden" value="0" />
+                <div class="row g-3">
+                    <div class="col-md-12">
+                        <label for="txtName" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="txtName" autocomplete="off">
+                    </div>
+                    <div class="col-md-12">
+                        <label for="txtDescription" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="txtDescription" rows="4"></textarea>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="collectionActive" class="form-label">Activa</label>
+                        <select class="form-select" id="collectionActive">
+                            <option value="1">SI</option>
+                            <option value="0">NO</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div id="errorMessage" class="alert alert-danger" role="alert">
+                            A simple danger alert—check it out!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="Save()">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        var tabledata
+        var selectedRow
+        tabledata = $("#table").DataTable({
+            responsive: true,
+            ordering: false,
+            "ajax": {
+                url: '@Url.Action("GetCollectionsList","Maintenance")',
+                type: "GET",
+                dataType: "json"
+            },
+            error: function (xhr, error, thrown) {
+                console.log("Error en la solicitud AJAX:", error);
+                console.log("Detalles:", thrown);
+            },
+            "columns": [
+                { "data": "Name" },
+                { "data": "Description" },
+                {
+                    "data": "Active", "render": function (value) {
+                        if (value) return '<span class="badge bg-primary">SI</span>'
+                        else return '<span class="badge bg-danger">NO</span>'
+                    }
+                },
+                {
+                    "defaultContent": '<button type="button" class="btn btn-success btn-sm btn-edit"><i class="fas fa-pen me-1"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-sm ms-2 btn-delete"><i class="fas fa-trash me-1"></i></button>',
+                    "orderable": false,
+                    "searchtable": false,
+                    "width": "90px"
+                }
+            ],
+            "language": {
+                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
+            }
+        });
+
+        function openModal(json) {
+            $("#txtId").val("");
+            $("#txtName").val("");
+            $("#txtDescription").val("");
+            $("#collectionActive").val(1);
+            $("#errorMessage").hide();
+            if (json != null) {
+                $("#txtId").val(json.IdCollection);
+                $("#txtName").val(json.Name);
+                $("#txtDescription").val(json.Description);
+                $("#collectionActive").val(json.Active == true ? 1 : 0);
+            }
+
+            $("#FormModal").modal("show");
+        }
+
+        $("#table tbody").on("click", '.btn-edit', function () {
+            selectedRow = $(this).closest("tr");
+
+            var data = tabledata.row(selectedRow).data();
+
+            console.log(data);
+
+            openModal(data);
+        })
+
+        $("#table tbody").on("click", '.btn-delete', function () {
+            var selectedCollection = $(this).closest("tr");
+
+            var data = tabledata.row(selectedCollection).data();
+
+            swal({
+                title: "¿Desea eliminar la colección?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "SI",
+                cancelButtonClass: "btn-primary",
+                cancelButtonText: "NO",
+                closeOnConfirm: true
+                },
+                function () {
+                    jQuery.ajax({
+                        url: '@Url.Action("DeleteCollection","Maintenance")',
+                        type: "POST",
+                        data: JSON.stringify({ id : data.IdCollection }),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            if (data.result) {
+                                tabledata.row(selectedCollection).remove().draw();
+                            } else {
+                                swal("No se ha podido eliminar");
+                            }
+                        }, error: function (xhr) {
+                            $(".modal-body").LoadingOverlay("hide");
+                            if (xhr.status === 400) {
+                                var error = JSON.parse(xhr.responseText);
+                                $("#errorMessage").text(error.error);
+                                $("#errorMessage").show();
+                            } else {
+                                console.log("Error inesperado:", xhr.responseText);
+                            }
+                        }
+                    });
+                }
+            );
+
+            console.log(data);
+        })
+
+        function Save() {
+            var collection = {
+                IdCollection: $("#txtId").val(),
+                Active: $("#collectionActive").val() == 1 ? true : false,
+                Name: $("#txtName").val(),
+                Description: $("#txtDescription").val()
+            }
+            jQuery.ajax({
+                url: '@Url.Action("AddCollection","Maintenance")',
+                type: "POST",
+                data: JSON.stringify({ collectionController : collection }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $(".modal-body").LoadingOverlay("hide");
+                    //Colección nuevo
+                    if (collection.IdCollection == 0) {
+                        if (data.result.IdCollection != 0) {
+                            collection.IdCollection = data.result.IdCollection;
+                            tabledata.row.add(collection).draw(false);
+                            $("#FormModal").modal("hide");
+                        } else {
+                            $(".modal-body").LoadingOverlay("hide");
+                            $("#errorMessage").text(error.error);
+                            $("#errorMessage").show();
+                        }
+                    } else {
+                        tabledata.row(selectedRow).data(collection).draw(false);
+                        $("#FormModal").modal("hide");
+                    }
+                }, error: function (xhr) {
+                    $(".modal-body").LoadingOverlay("hide");
+                    if (xhr.status === 400) {
+                        var error = JSON.parse(xhr.responseText);
+                        $("#errorMessage").text(error.error);
+                        $("#errorMessage").show();
+                    } else {
+                        console.log("Error inesperado:", xhr.responseText);
+                    }
+                },
+                beforeSend: function () {
+                    $(".modal-body").LoadingOverlay("show", {
+                        imageResizeFactor: 2,
+                        text: "Cargando...",
+                        size: 14
+                    })
+                }
+            });
+        }
+
+    </script>
+}
 
