@@ -87,69 +87,69 @@ namespace AdminView.Controllers
         }
         #endregion
 
-        //#region PRODUCT
-        //[HttpGet]
-        //public JsonResult GetProductsList()
-        //{
-        //    try
-        //    {
-        //        List<Product> oList = new ProductLogic().GetList();
-        //        return Json(new { data = oList }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (ValidationException ex)
-        //    {
-        //        Response.StatusCode = 400; // Bad Request
-        //        return Json(new { error = ex.Message });
-        //    }
-        //    catch (Exception)
-        //    {
-        //        Response.StatusCode = 500; // Internal Server Error
-        //        return Json(new { error = "Ha ocurrido un error al intentar mostrar la colección." });
-        //    }
+        #region PRODUCT
+        [HttpGet]
+        public JsonResult GetProductsList()
+        {
+            try
+            {
+                List<Product> oList = new ProductLogic().GetList();
+                return Json(new { data = oList }, JsonRequestBehavior.AllowGet);
+            }
+            catch (ValidationException ex)
+            {
+                Response.StatusCode = 400; // Bad Request
+                return Json(new { error = ex.Message });
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = 500; // Internal Server Error
+                return Json(new { error = "Ha ocurrido un error al intentar mostrar la colección." });
+            }
 
-        //}
+        }
 
-        //[HttpPost]
-        //public JsonResult AddProduct(Product productController)
-        //{
-        //    try
-        //    {
-        //        if (productController.IdProduct == 0) new ProductLogic().Add(productController);
-        //        else new ProductLogic().Update(productController);
-        //        return Json(new { result = productController });
-        //    }
-        //    catch (ValidationException ex)
-        //    {
-        //        Response.StatusCode = 400; // Bad Request
-        //        return Json(new { error = ex.Message });
-        //    }
-        //    catch (Exception)
-        //    {
-        //        Response.StatusCode = 500; // Internal Server Error
-        //        return Json(new { error = "Ha ocurrido un error al intentar agregar la colección." });
-        //    }
-        //}
+        [HttpPost]
+        public JsonResult AddProduct(Product productController)
+        {
+            try
+            {
+                if (productController.IdProduct == 0) new ProductLogic().Add(productController);
+                else new ProductLogic().Update(productController);
+                return Json(new { result = productController });
+            }
+            catch (ValidationException ex)
+            {
+                Response.StatusCode = 400; // Bad Request
+                return Json(new { error = ex.Message });
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = 500; // Internal Server Error
+                return Json(new { error = "Ha ocurrido un error al intentar agregar la colección." });
+            }
+        }
 
-        //[HttpPost]
-        //public JsonResult DeleteProduct(int id)
-        //{
-        //    try
-        //    {
-        //        bool response = false;
-        //        response = new ProductLogic().Delete(id);
-        //        return Json(new { result = response });
-        //    }
-        //    catch (ValidationException ex)
-        //    {
-        //        Response.StatusCode = 400; // Bad Request
-        //        return Json(new { error = ex.Message });
-        //    }
-        //    catch (Exception)
-        //    {
-        //        Response.StatusCode = 500; // Internal Server Error
-        //        return Json(new { error = "Ha ocurrido un error al intentar borrar la colección." });
-        //    }
-        //}
-        //#endregion
+        [HttpPost]
+        public JsonResult DeleteProduct(int id)
+        {
+            try
+            {
+                bool response = false;
+                response = new ProductLogic().Delete(id);
+                return Json(new { result = response });
+            }
+            catch (ValidationException ex)
+            {
+                Response.StatusCode = 400; // Bad Request
+                return Json(new { error = ex.Message });
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = 500; // Internal Server Error
+                return Json(new { error = "Ha ocurrido un error al intentar borrar la colección." });
+            }
+        }
+        #endregion
     }
 }

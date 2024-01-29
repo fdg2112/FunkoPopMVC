@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="CollectionLogic.cs" />
     <Compile Include="ICRUD.cs" />
+    <Compile Include="ProductLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.cs" />
     <Compile Include="UserLogic.cs" />

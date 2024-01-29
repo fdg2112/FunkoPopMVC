@@ -26,6 +26,56 @@ namespace Data
             }
         }
 
+
+        public List<Product> GetListWithCollectionInfo()
+        {
+            try
+            {
+                var productList = _context.Product
+                    .Join(
+                        _context.Collection,
+                        product => product.IdCollection,
+                        collection => collection.IdCollection,
+                        (product, collection) => new
+                        {
+                            product.IdProduct,
+                            product.Name,
+                            product.Description,
+                            product.Price,
+                            product.Stock,
+                            product.Shine,
+                            product.IdCollection,
+                            product.Active,
+                            product.Url_image,
+                            product.Ref_image,
+                            product.RegisterDate,
+                            CollectionName = collection.Name // Agregar la propiedad de nombre de la colección
+                        }
+                    )
+                    .ToList();
+
+                return productList.Select(p => new Product
+                {
+                    IdProduct = p.IdProduct,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    Stock = p.Stock,
+                    Shine = p.Shine,
+                    IdCollection = p.IdCollection,
+                    Active = p.Active,
+                    Url_image = p.Url_image,
+                    Ref_image = p.Ref_image,
+                    RegisterDate = p.RegisterDate,
+                    COLLECTION = new Collection { Name = p.CollectionName } // Crear una nueva instancia de Collection solo con el nombre
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener la lista de productos con información de la colección.", ex);
+            }
+        }
+
         public void Add(Product product)
         {
             try
@@ -36,6 +86,21 @@ namespace Data
             catch (Exception ex)
             {
                 throw new Exception("Ha ocurrido un error al intentar agregar el producto. " + ex.Message);
+            }
+        }
+
+        public void AddImage(Product product)
+        {
+            try
+            {
+                var existingProduct = _context.Product.FirstOrDefault(u => u.IdProduct == product.IdProduct) ?? throw new ArgumentException("El producto no existe en la base de datos.", nameof(product.IdProduct));
+                existingProduct.Url_image = product.Url_image;
+                existingProduct.Ref_image = product.Ref_image;
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ha ocurrido un error al intentar agregar la imagen al producto. " + ex.Message);
             }
         }
 

@@ -42,7 +42,7 @@ namespace Enities
         [StringLength(100)]
         public string Ref_image { get; set; }
 
-        public DateTime? Registerdate { get; set; }
+        public DateTime? RegisterDate { get; set; }
 
         public virtual ICollection<Cart> CART { get; set; }
 
