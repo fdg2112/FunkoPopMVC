@@ -27,6 +27,7 @@ namespace Enities
         public string Description { get; set; }
 
         public decimal? Price { get; set; }
+        public string PriceText { get; set; }
 
         public int Stock { get; set; }
 
@@ -41,6 +42,9 @@ namespace Enities
 
         [StringLength(100)]
         public string Ref_image { get; set; }
+
+        public string Base64 { get; set; }
+        public string Extension { get; set; }
 
         public DateTime? RegisterDate { get; set; }
 

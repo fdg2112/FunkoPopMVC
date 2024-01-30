@@ -66,13 +66,17 @@
                         <label for="txtDescription" class="form-label">Descripción</label>
                         <textarea class="form-control" id="txtDescription" rows="2"></textarea>
                     </div>
-                    <div class="col-md-6 m-1">
+                    <div class="col-md-12 m-1">
                         <span class="input-group-text">$</span>
                         <input type="text" class="form-control" id="txtPrice" aria-label="Amount (to the nearest dollar)">
                     </div>
-                    <div class="col-md-6 m-1">
+                    <div class="col-md-12 m-1">
                         <label for="txtStock" class="form-label">Stock</label>
                         <input type="number" class="form-control" id="txtStock" value="0" min="0">
+                    </div>
+                    <div class="col-md-12 m-1">
+                        <label for="txtCollection" class="form-label">Colección</label>
+                        <textarea type="text" class="form-control" id="txtCollection"></textarea>
                     </div>
                     <div class="col-md-12 m-1">
                         <label for="shine" class="form-label">Brilla</label>
@@ -126,6 +130,7 @@
                 { "data": "Description" },
                 { "data": "Price" },
                 { "data": "Stock" },
+                { "data": "Collection" },
                 {
                     "data": "Shine", "render": function (value) {
                         if (value) return '<span class="badge bg-primary">SI</span>'

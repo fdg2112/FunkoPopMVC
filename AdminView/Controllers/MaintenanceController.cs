@@ -1,7 +1,9 @@
 ﻿using Enities;
 using Logic;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -93,7 +95,7 @@ namespace AdminView.Controllers
         {
             try
             {
-                List<Product> oList = new ProductLogic().GetList();
+                List<Product> oList = new ProductLogic().GetListWithCollectionInfo();
                 return Json(new { data = oList }, JsonRequestBehavior.AllowGet);
             }
             catch (ValidationException ex)
@@ -110,12 +112,41 @@ namespace AdminView.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddProduct(Product productController)
+        public JsonResult AddProduct(string productController, HttpPostedFileBase fileImage)
         {
+            bool successfulOperation = true;
+            bool successfulSaveImage = true;
+            Product oProduct = JsonConvert.DeserializeObject<Product>(productController);
+            decimal price;
             try
             {
+                if (decimal.TryParse(oProduct.PriceText,NumberStyles.AllowDecimalPoint))
+                {
+
+                }
                 if (productController.IdProduct == 0) new ProductLogic().Add(productController);
                 else new ProductLogic().Update(productController);
+                return Json(new { result = productController });
+            }
+            catch (ValidationException ex)
+            {
+                Response.StatusCode = 400; // Bad Request
+                return Json(new { error = ex.Message });
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = 500; // Internal Server Error
+                return Json(new { error = "Ha ocurrido un error al intentar agregar la colección." });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult AddProductImage(Product productController)
+        {
+
+            try
+            {
+                if (productController.IdProduct != 0) new ProductLogic().AddImage(productController);
                 return Json(new { result = productController });
             }
             catch (ValidationException ex)

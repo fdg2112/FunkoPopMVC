@@ -18,10 +18,20 @@ namespace Logic
             return productData.GetList();
         }
 
+        public List<Product> GetListWithCollectionInfo()
+        {
+            return productData.GetListWithCollectionInfo();
+        }
+
         public void Add(Product product)
         {
             Validation(product);
             productData.Add(product);
+        }
+
+        public void AddImage(Product product)
+        {
+            productData.AddImage(product);
         }
 
         public bool Delete(int id)
