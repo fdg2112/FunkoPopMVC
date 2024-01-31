@@ -3,8 +3,8 @@ using Enities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Text;
+using Firebase.Storage;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Logic
@@ -12,6 +12,7 @@ namespace Logic
     public class ProductLogic
     {
         private readonly ProductData productData = new ProductData();
+        private readonly FirebaseStorage firebaseStorage = new FirebaseStorage("your-firebase-project-id.appspot.com");
 
         public List<Product> GetList()
         {
@@ -28,10 +29,18 @@ namespace Logic
             Validation(product);
             productData.Add(product);
         }
-
         public void AddImage(Product product)
         {
             productData.AddImage(product);
+        }
+        public async Task<string> UploadImage(Stream imageStream, string fileName)
+        {
+            var imageUrl = await firebaseStorage
+                .Child("images")
+                .Child(fileName)
+                .PutAsync(imageStream);
+
+            return imageUrl;
         }
 
         public bool Delete(int id)
