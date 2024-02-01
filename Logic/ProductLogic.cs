@@ -12,7 +12,7 @@ namespace Logic
     public class ProductLogic
     {
         private readonly ProductData productData = new ProductData();
-        private readonly FirebaseStorage firebaseStorage = new FirebaseStorage("your-firebase-project-id.appspot.com");
+        private readonly FirebaseStorage firebaseStorage = new FirebaseStorage("funkopop-imgs.appspot.com");
 
         public List<Product> GetList()
         {

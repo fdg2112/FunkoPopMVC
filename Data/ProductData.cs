@@ -67,7 +67,7 @@ namespace Data
                     Url_image = p.Url_image,
                     Ref_image = p.Ref_image,
                     RegisterDate = p.RegisterDate,
-                    COLLECTION = new Collection { Name = p.CollectionName } // Crear una nueva instancia de Collection solo con el nombre
+                    Collection = new Collection { Name = p.CollectionName } // Crear una nueva instancia de Collection solo con el nombre
                 }).ToList();
             }
             catch (Exception ex)

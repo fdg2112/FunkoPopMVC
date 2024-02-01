@@ -11,8 +11,8 @@ namespace Enities
     {
         public Product()
         {
-            CART = new HashSet<Cart>();
-            SALE_DETAIL = new HashSet<Sale_Detail>();
+            Cart = new HashSet<Cart>();
+            Sale_Detail = new HashSet<Sale_Detail>();
         }
 
         [Key]
@@ -48,10 +48,10 @@ namespace Enities
 
         public DateTime? RegisterDate { get; set; }
 
-        public virtual ICollection<Cart> CART { get; set; }
+        public virtual ICollection<Cart> Cart { get; set; }
 
-        public virtual Collection COLLECTION { get; set; }
+        public virtual Collection Collection { get; set; }
 
-        public virtual ICollection<Sale_Detail> SALE_DETAIL { get; set; }
+        public virtual ICollection<Sale_Detail> Sale_Detail { get; set; }
     }
 }
