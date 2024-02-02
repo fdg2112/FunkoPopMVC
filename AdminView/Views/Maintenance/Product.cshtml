@@ -50,49 +50,76 @@
 
 <!-- Modal -->
 <div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
+
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Nuevo Producto</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <div class="modal-body">
                 <input id="txtId" type="hidden" value="0" />
-                <div class="row g-3">
-                    <div class="col-md-12 m-1">
-                        <label for="txtName" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="txtName" autocomplete="off">
+                <form id="container" class="row">
+
+                    <div class="col-sm-3">
+                        <div class="mb-2">
+                            <img id="img_product" height="200" width="200" class="border rounded mx-auto d-block img-fluid" />
+                        </div>
+                        <div class="mb-2">
+                            <input class="form-control" type="file" id="productFile" accept="image/png, image/jpg, image/jpeg" onchange="showImage(this)" />
+                        </div>
                     </div>
-                    <div class="col-md-12 m-1">
-                        <label for="txtDescription" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="txtDescription" rows="2"></textarea>
+                    <div class="col-sm-3">
+                        <div class="mb-3">
+                            <label for="txtName" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="txtName" autocomplete="off" name="name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="txtDescription" class="form-label">Descripción</label>
+                            <textarea type="text" class="form-control" id="txtDescription" name="description" style="height:125px;resize:none"></textarea>
+                        </div>
                     </div>
-                    <div class="col-md-3 input-group mb-1">
-                        <span class="input-group-text">$</span>
-                        <input type="text" class="form-control" id="txtPrice" aria-label="Amount (to the nearest dollar)">
-                        <label for="txtStock" class="form-label">Stock</label>
-                        <input type="number" class="form-control" id="txtStock" value="0" min="0">
+
+                    <div class="col-sm-3">
+                        <div class="mb-3">
+                            <label class="form-label">Colección</label>
+                            <select id="cboCollection" class="form-select">
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Precio</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">$</span>
+                                <input type="text" class="form-control" id="txtPrice" name="price" aria-label="Amount (to the nearest dollar)">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="txtStock" class="form-label">Stock</label>
+                            <input type="number" class="form-control" id="txtStock" name="stock" value="0" min="0">
+                        </div>
                     </div>
-                    <div class="col-md-12 m-1">
-                        <label for="txtCollection" class="form-label">Colección</label>
-                        <input type="text" class="form-control" id="txtCollection" autocomplete="off">
+
+                    <div class="col-sm-3">
+                        <div class="mb-3">
+                            <label for="shine" class="form-label">Brilla</label>
+                            <select class="form-select" id="shine">
+                                <option value="1">SI</option>
+                                <option value="0">NO</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productActive" class="form-label">Activo</label>
+                            <select class="form-select" id="productActive">
+                                <option value="1">SI</option>
+                                <option value="0">NO</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="col-md-12 m-1">
-                        <label for="shine" class="form-label">Brilla</label>
-                        <select class="form-select" id="shine">
-                            <option value="1">SI</option>
-                            <option value="0">NO</option>
-                        </select>
-                    </div>
-                    <div class="col-md-12 m-1">
-                        <label for="productActive" class="form-label">Activo</label>
-                        <select class="form-select" id="productActive">
-                            <option value="1">SI</option>
-                            <option value="0">NO</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row mt-4">
+
+                </form>
+
+                <div class="row mt-2">
                     <div class="col-12">
                         <div id="errorMessage" class="alert alert-danger" role="alert">
                             A simple danger alert—check it out!
@@ -100,9 +127,11 @@
                     </div>
                 </div>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" onclick="Save()">Guardar Cambios</button>
             </div>
+
         </div>
     </div>
 </div>
@@ -112,6 +141,17 @@
     <script>
         var tabledata
         var selectedRow
+
+        function showImage(input) {
+            if (input.files) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("#img_product").attr("src",e.target.result).width(200).height(200)
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
         tabledata = $("#table").DataTable({
             responsive: true,
             ordering: false,
@@ -159,6 +199,7 @@
             $("#txtId").val("");
             $("#txtName").val("");
             $("#txtDescription").val("");
+            //$("#dboCollection").val(0);
             $("#txtPrice").val("");
             $("#txtStock").val("");
             $("#shine").val(0);
@@ -168,6 +209,7 @@
                 $("#txtId").val(json.IdProduct);
                 $("#txtName").val(json.Name);
                 $("#txtDescription").val(json.Description);
+                /*$("#dboCollection").val(json.Collection.Name);*/
                 $("#productActive").val(json.Active == true ? 1 : 0);
                 $("#txtPrice").val(json.Price);
                 $("#txtStock").val(json.Stock);
