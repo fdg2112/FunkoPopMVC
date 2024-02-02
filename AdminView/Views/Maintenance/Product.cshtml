@@ -195,11 +195,36 @@
             }
         });
 
+        jQuery.ajax({
+            url: '@Url.Action("GetCollectionsList", "Maintenance")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $("<option>").attr({ "value": "0", "disabled":"true" }).text("Seleccionar").appendTo("#cboCollection")
+                $.each(data.data, function (index, value) {
+                    $("<option>").attr({ "value": value.IdCollection }).text(value.Name).appendTo("#cboCollection")
+                })
+            }, error: function (xhr) {
+                $(".modal-body").LoadingOverlay("hide");
+                if (xhr.status === 400) {
+                    var error = JSON.parse(xhr.responseText);
+                    $("#errorMessage").text(error.error);
+                    $("#errorMessage").show();
+                } else {
+                    console.log("Error inesperado:", xhr.responseText);
+                }
+            }
+        });
+
         function openModal(json) {
             $("#txtId").val("");
+            $("#img_product").removeAttr("src");
+            $("#productFile").val("");
             $("#txtName").val("");
             $("#txtDescription").val("");
-            //$("#dboCollection").val(0);
+            $("#cboCollection").val($("#cboCollection option:first").val());
             $("#txtPrice").val("");
             $("#txtStock").val("");
             $("#shine").val(0);
@@ -209,7 +234,7 @@
                 $("#txtId").val(json.IdProduct);
                 $("#txtName").val(json.Name);
                 $("#txtDescription").val(json.Description);
-                /*$("#dboCollection").val(json.Collection.Name);*/
+                //$("#cboCollection").val(json.oCollection.IdCollection);
                 $("#productActive").val(json.Active == true ? 1 : 0);
                 $("#txtPrice").val(json.Price);
                 $("#txtStock").val(json.Stock);
@@ -275,14 +300,19 @@
         })
 
         function Save() {
+            var selectedImage = $("#fileProduct")[0].files[0];
             var product = {
                 IdProduct: $("#txtId").val(),
-                Active: $("#productActive").val() == 1 ? true : false,
                 Name: $("#txtName").val(),
                 Description: $("#txtDescription").val(),
+                oCollection: {
+                    IdCollection: $("#cboCollection option:selected").val(),
+                    Name: $("#cboCollection option:selected").text()
+                },
                 Price: $("#txtPrice").val(),
                 Stock: $("#txtStock").val(),
-                Shine: $("#shine").val()
+                Shine: $("#shine").val() == 1 ? true : false,
+                Active: $("#productActive").val() == 1 ? true : false
             }
             jQuery.ajax({
                 url: '@Url.Action("AddProduct","Maintenance")',
