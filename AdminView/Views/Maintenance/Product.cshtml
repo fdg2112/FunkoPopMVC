@@ -300,7 +300,7 @@
         })
 
         function Save() {
-            var selectedImage = $("#fileProduct")[0].files[0];
+            var selectedImage = $("#productFile")[0].files[0];
             var product = {
                 IdProduct: $("#txtId").val(),
                 Name: $("#txtName").val(),
@@ -314,12 +314,16 @@
                 Shine: $("#shine").val() == 1 ? true : false,
                 Active: $("#productActive").val() == 1 ? true : false
             }
+            var request = new FormData();
+            request.append("productController", JSON.stringify(product))
+            request.append("imageFile", selectedImage)
+            debugger;
             jQuery.ajax({
-                url: '@Url.Action("AddProduct","Maintenance")',
+                url: '@Url.Action("AddProduct", "Maintenance")',
                 type: "POST",
-                data: JSON.stringify({ productController : product }),
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
+                data: request,
+                processData: false,
+                contentType: false,
                 success: function (data) {
                     $(".modal-body").LoadingOverlay("hide");
                     //Producto nuevo

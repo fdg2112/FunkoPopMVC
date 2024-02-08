@@ -19,6 +19,11 @@ namespace Logic
             return productData.GetList();
         }
 
+        public Product GetLast()
+        {
+            return productData.GetLast();
+        }
+
         public List<Product> GetListWithCollectionInfo()
         {
             return productData.GetListWithCollectionInfo();

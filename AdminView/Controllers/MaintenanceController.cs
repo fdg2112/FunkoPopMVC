@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -113,61 +114,13 @@ namespace AdminView.Controllers
 
         }
 
-        [HttpPost]
-        public async Task<JsonResult> AddProduct(string productController, HttpPostedFileBase fileImage)
+        public JsonResult AddProduct(Product productController)
         {
-            bool successfulOperation = true;
-            Product oProduct = JsonConvert.DeserializeObject<Product>(productController);
             try
             {
-                if (decimal.TryParse(oProduct.PriceText, NumberStyles.AllowDecimalPoint, new CultureInfo("es-AR"), out decimal price)) oProduct.Price = price;
-                else return Json(new { successfulOperation = false }, JsonRequestBehavior.AllowGet);
-                if (oProduct.IdProduct == 0)
-                {
-                    try
-                    {
-                        new ProductLogic().Add(oProduct);
-                    }
-                    catch (Exception)
-                    {
-                        successfulOperation = false;
-                    }
-
-                }
-                else try
-                    {
-                        new ProductLogic().Update(oProduct);
-                    }
-                    catch (Exception)
-                    {
-                        successfulOperation = false;
-                    }
-
-                if (successfulOperation)
-                {
-                    if (fileImage != null)
-                    {
-                        try
-                        {
-                            // Llama al método para agregar la imagen en la lógica
-                            await AddProductImage(oProduct, fileImage);
-                        }
-                        catch (ValidationException ex)
-                        {
-                            // Maneja la excepción de validación
-                            Response.StatusCode = 400; // Bad Request
-                            return Json(new { error = ex.Message });
-                        }
-                        catch (Exception ex)
-                        {
-                            // Maneja otras excepciones
-                            Response.StatusCode = 500; // Internal Server Error
-                            return Json(new { error = $"Ha ocurrido un error al intentar agregar la imagen: {ex.Message}" });
-                        }
-                    }
-                }
-
-                return Json(new { result = oProduct });
+                if (productController.IdProduct == 0) new ProductLogic().Add(productController);
+                else new ProductLogic().Update(productController);
+                return Json(new { result = productController });
             }
             catch (ValidationException ex)
             {
@@ -182,13 +135,13 @@ namespace AdminView.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> AddProductImage(Product productController, HttpPostedFileBase fileImage)
+        public async Task<JsonResult> AddProductImage(Product productController, HttpPostedFileBase imageFile)
         {
             try
             {
-                if (productController.IdProduct != 0 && fileImage != null)
+                if (productController.IdProduct != 0 && imageFile != null)
                 {
-                    var imageStream = fileImage.InputStream;
+                    var imageStream = imageFile.InputStream;
 
                     // Genera un nombre único para la imagen (puedes ajustarlo según tus necesidades)
                     var imageName = $"{Guid.NewGuid()}.png";
@@ -217,6 +170,72 @@ namespace AdminView.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<JsonResult> AddProductWithImage(string productController, HttpPostedFileBase imageFile)
+        {
+            try
+            {
+                // Deserializa el objeto JSON del producto
+                Product oProduct = JsonConvert.DeserializeObject<Product>(productController);
+
+                // Valida el formato del precio
+                if (!decimal.TryParse(oProduct.PriceText, NumberStyles.AllowDecimalPoint, new CultureInfo("es-AR"), out decimal price))
+                {
+                    return Json(new { successfulOperation = false, error = "El formato del precio debe ser ###.##" });
+                }
+
+                oProduct.Price = price;
+
+                // Guarda el producto en la base de datos
+                if (oProduct.IdProduct == 0)
+                {
+                    new ProductLogic().Add(oProduct);
+                }
+                else
+                {
+                    new ProductLogic().Update(oProduct);
+                }
+
+                // Sube la imagen si existe y actualiza la URL en el objeto del producto
+                if (imageFile != null)
+                {
+                    var imageUrl = await UploadProductImage(oProduct, imageFile);
+                    oProduct.Url_image = imageUrl;
+                }
+
+                return Json(new { result = oProduct });
+            }
+            catch (ValidationException ex)
+            {
+                Response.StatusCode = 400; // Bad Request
+                return Json(new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500; // Internal Server Error
+                return Json(new { error = $"Ha ocurrido un error: {ex.Message}" });
+            }
+        }
+
+        private async Task<string> UploadProductImage(Product product, HttpPostedFileBase imageFile)
+        {
+            try
+            {
+                var imageStream = imageFile.InputStream;
+
+                // Genera un nombre único para la imagen (puedes ajustarlo según tus necesidades)
+                var imageName = $"{Guid.NewGuid()}.png";
+
+                // Sube la imagen a Firebase Storage y devuelve la URL
+                var imageUrl = await new ProductLogic().UploadImage(imageStream, imageName);
+
+                return imageUrl;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al subir la imagen del producto: {ex.Message}");
+            }
+        }
 
 
         [HttpPost]

@@ -14,6 +14,19 @@ namespace Data
         {
             _context = new FunkoPopContext();
         }
+        public Product GetLast()
+        {
+            try
+            {
+                return _context.Product.OrderByDescending(p => p.IdProduct).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener el último producto agregado.", ex);
+            }
+        }
+
+
         public List<Product> GetList()
         {
             try
@@ -25,7 +38,6 @@ namespace Data
                 throw new Exception("Error al obtener la lista de productos.", ex);
             }
         }
-
 
         public List<Product> GetListWithCollectionInfo()
         {
